@@ -1,0 +1,4 @@
+roxygen2::roxygenize()
+unlink("NAMESPACE")
+roxygen2::roxygenize()
+devtools::check()
