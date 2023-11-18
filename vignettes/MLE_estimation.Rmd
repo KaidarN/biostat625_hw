@@ -23,25 +23,25 @@ library(AER)
 ```
 
 ## Introduction to Maximum Likelihood Estimation (MLE)
-MLE is a statistical method of estimating statistical parameters of interest. For a basic regression model we are interested in finding model parameters that maximize the likelihood function. The main goal is to measure how well the model explains the observed data.  
+MLE is a method of estimating statistical parameters of interest. For a basic regression model we are interested in finding model parameters that maximize the likelihood function. The main goal is to measure how well the model explains the observed data.  
 
 ## Linear model
 The likelihood function of the linear regression looks as following. 
 \begin{equation}
 -\frac{1}{2} N \log(2 \pi) - \frac{1}{2} N \log(\hat{\sigma}^2) - \frac{1}{2\sigma^2}(y'y-2y'X\beta+\beta'X'X\beta)
 \end{equation}
-This is the main function used in the source code. If we have more than values to maximize, then we need a different function for numerical optimization. Hence the MLE function then is passed into r \textit{optim} function to find extreme points of (multivariate functions). The reason for this is complexity with findings an analytical solution from the equation 1. The \textit{optim} function is specified to use Broyden - Fletcher - Goldfrab - Shahho (BFGS) algorithm with 1000 iterations. TO find the standard errors we need to estimate the variance-covariance matrix as the inverse of the negative Hessian matrix. This is the last peace of code that then combines $\beta$ values and standard errors in one output
+This is the main function used in the source code. If we have more than values to maximize, then we need a different function for numerical optimization. Hence the MLE function then is passed into r \textit{optim} function to find extreme points of (multivariate functions). The reason for this is complexity with findings an analytical solution from the equation 1. The \textit{optim} function is specified to use Broyden - Fletcher - Goldfrab - Shahho (BFGS). To find the standard errors we need to estimate the variance-covariance matrix as the inverse of the negative Hessian matrix. This is the last peace of code that then combines $\beta$ values and standard errors in one output
 
 ## Logistic model
 The likelihood function of the logistic regression has the following form. 
 \begin{equation}
 y \cdot \log\left(\frac{1}{{1 + \exp(-\mu)}}\right) + (1 - y) \cdot \log\left(1 - \frac{1}{{1 + \exp(-\mu)}}\right)
 \end{equation}
-For the multivariate function the extreme points are calculated using \textit{optim} function and BFGS alogirithm with 1000 iterations. Standard errors are calculated using the variance-covariance matrix as the inverse of the negative Hessian matrix. The code so far supports only the logit models and will give an error message if the probit model is specified as the argument in the function.
+For the multivariate function the extreme points are calculated using \textit{optim} function and BFGS alogirithm. Standard errors are calculated using the variance-covariance matrix as the inverse of the negative Hessian matrix. The code so far supports only the logit models and will give an error message if the probit model is specified as the argument in the function.
 
 
 ## Example data
-To test the functions two data sets are provided. Keep in mind that due to asymptotic properties we need a large sample. The first data is famous \textit{iris} data set. We use it for fitting multiple linear regression model. In the model Sepal.Length (y) is regressed against Sepal.Width, Petal.Length and Petal.Width (X). For the logistic regression we are using \textit{Affairs} data from AER package. The variables included into analysis are gender (y) religiousness, education, occupation and rating which together represent independent variables (X). Both of the datasets are part of the current package. So please free to replicate the code below.
+To test the functions two data sets are provided. Keep in mind that due to asymptotic properties we need a large sample to get stable estimates. The first data is famous \textit{iris} data set. We use it for fitting multiple linear regression model. In the model Sepal.Length (y) is regressed against Sepal.Width, Petal.Length and Petal.Width (X). For the logistic regression we are using \textit{Affairs} data from AER package. The variables included into analysis are gender (y) religiousness, education, occupation and rating which together represent independent variables (X). Both of the datasets are part of the current package. So please free to replicate the code below.
 
 ```{r, echo=F}
 ll.models <- function(y, X, model.type) {
@@ -115,7 +115,7 @@ ll.models <- function(y, X, model.type) {
 
 
 ## Comparison with existing functions 
-To compare the output one can use OLS \textit{lm()} or \textit{glm()} with link \textit{logit}. However keep in mind that OLS and MLE linear regression models will not produce identical results since these are different estimation methods, as shown in the example below. Note that it is important to recode variables into numeric before the analysis, since currently loglik function does not create reference categories for character and factor type variables.
+To compare the output one can use OLS \textit{lm()} or \textit{glm()} with link \textit{logit}. However keep in mind that OLS and MLE linear regression models will not produce identical results since these are different estimation methods, as shown in the example below. Note that it is important to recode variables into numeric before the analysis, since currently ll.models function does not create reference categories for character and factor type variables.
 
 ## Linear regression example and comparison
 ```{r, echo=T}
