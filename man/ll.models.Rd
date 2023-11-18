@@ -2,7 +2,7 @@
 % Please edit documentation in R/loglik_models.R
 \name{ll.models}
 \alias{ll.models}
-\title{MLE for Linear and Logistic Regressions Models}
+\title{MLE estimation for linear and logistic regression models}
 \usage{
 ll.models(y, X, model.type)
 }
@@ -15,12 +15,13 @@ ll.models(y, X, model.type)
 logistic (link logit) or linear models}
 }
 \value{
-Returns the matrix of parameter estimates and associated standard errors
+Returns a matrix of parameter estimates and associated standard errors
 }
 \description{
-This function is designed to provide some modeling capabilites using Maximum Likelihood Estimation. Currently only Linear and Logistic models are supported
+MLE estimation for linear and logistic regression models
 }
 \examples{
 model.linear <- ll.models(y=y, X=X, model.type='linear')
 model.logistic <- ll.models(y=y, X=X, model.type='logistic')
+
 }

@@ -3,7 +3,7 @@
     "path": "C:/Users/kai_kasados/Desktop/UM Fall 2023/625/R package/loglikmodels/R/loglik_models.R",
     "project_path": "R/loglik_models.R",
     "type": "r_source",
-    "hash": "4169474457",
+    "hash": "2531716021",
     "contents": "",
     "dirty": false,
     "created": 1700023910333.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "14,10",
-        "scrollLine": "2"
+        "cursorPosition": "1,59",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1700113986,
+    "lastKnownWriteTime": 1700280163,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1700113986721,
+    "last_content_update": 1700280163450,
     "read_only": false,
     "read_only_alternatives": []
 }

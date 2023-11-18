@@ -1,10 +1,5 @@
 
-
-
-
-
-
-#' Title
+#' MLE estimation for linear and logistic regression models
 #'
 #' @param y Vector of the outcome variable or dependent variable
 #' @param X Matrix of the independent variables.
@@ -17,7 +12,13 @@
 #' @examples
 #' model.linear <- ll.models(y=y, X=X, model.type='linear')
 #' model.logistic <- ll.models(y=y, X=X, model.type='logistic')
+#'
 ll.models <- function(y, X, model.type) {
+
+  if (all(X[,1] == 1))
+  {X <- as.matrix(X)}
+  else {X <- as.matrix(cbind(1,X))}
+
 
   if (model.type == 'linear') {
     linmod.llik <- function(theta, y, X) {
@@ -35,12 +36,19 @@ ll.models <- function(y, X, model.type) {
       # return log-likelihood
       return(llik)
     }
-    inits <- c(0, rep(0, ncol(X))) # define starting values
+
+    inits <- c(0, rep(0,ncol(X))) # define starting values
     # results assignment moved outside of the function definition
+
     results <- optim(inits, linmod.llik, y = y, X = X,
                      control = list(fnscale = -1),
                      method = "BFGS",
                      hessian = TRUE)
+
+    Estimate <- results$par[1:ncol(X)]
+    Std.Error <- sqrt(diag(-solve(results$hessian)))[1:ncol(X)]
+    print(cbind(Estimate, Std.Error))
+
   } else if (model.type == 'logistic') {
     ll.logit <- function(theta, y, X) {
       # theta consists merely of beta (dim is ncol(X))
@@ -55,18 +63,20 @@ ll.models <- function(y, X, model.type) {
       ll <- sum(ll)
       return(ll)
     }
+
     inits <- c(rep(0, ncol(X))) # # define starting values
     # results assignment moved outside of the function definition
     results <- optim(inits, ll.logit, y = y, X = X,
                      control = list(fnscale = -1),
                      method = "BFGS",
                      hessian = TRUE)
+
+    Estimate <- results$par
+    Std.Error <- sqrt(diag(-solve(results$hessian)))
+    print(cbind(Estimate, Std.Error))
+
   } else {
     stop('Please specify the correct model! Currently only Linear and Logistic (link=logit) models are supported')
   }
-
-  betas <- results$par[1:ncol(X)]
-  std.err <- sqrt(diag(-solve(results$hessian)))[1:ncol(X)]
-  print(cbind(betas, std.err))
 }
 
